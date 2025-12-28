@@ -1,5 +1,8 @@
 "use client";
 
+// Mark as dynamic so Next.js won't attempt static prerender with useSearchParams
+export const dynamic = "force-dynamic";
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
