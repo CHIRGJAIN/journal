@@ -1,0 +1,29 @@
+# Dependency directories
+node_modules/
+**/node_modules/
+
+# Build output
+frontend/.next/
+frontend/out/
+frontend/.vercel/
+backend/dist/
+
+# Logs and coverage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+coverage/
+
+# Env and local config
+.env
+.env.local
+.env.*.local
+
+# Editor and system files
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/

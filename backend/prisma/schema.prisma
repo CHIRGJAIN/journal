@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  roles     String   // Comma separated roles or JSON: ADMIN, EDITOR, REVIEWER, AUTHOR
+  expertise String   // Comma separated or JSON
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  manuscripts Manuscript[] @relation("AuthorManuscripts")
+  reviews     Review[]
+}
+
+model Manuscript {
+  id          String           @id @default(uuid())
+  title       String
+  abstract    String
+  contentUrl  String
+  status      String           @default("DRAFT") // DRAFT, SUBMITTED, UNDER_REVIEW, REVISION_REQUESTED, ACCEPTED, REJECTED, PUBLISHED
+  authorId    String
+  author      User             @relation("AuthorManuscripts", fields: [authorId], references: [id])
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  
+  reviews     Review[]
+  issueId     String?
+  issue       Issue?           @relation(fields: [issueId], references: [id])
+}
+
+model Review {
+  id           String   @id @default(uuid())
+  content      String
+  decision     String
+  manuscriptId String
+  manuscript   Manuscript @relation(fields: [manuscriptId], references: [id])
+  reviewerId   String
+  reviewer     User     @relation(fields: [reviewerId], references: [id])
+  createdAt    DateTime @default(now())
+}
+
+model Journal {
+  id          String @id @default(uuid())
+  name        String
+  description String
+  issn        String?
+  volumes     Volume[]
+}
+
+model Volume {
+  id        String  @id @default(uuid())
+  volumeNumber Int
+  journalId String
+  journal   Journal @relation(fields: [journalId], references: [id])
+  issues    Issue[]
+}
+
+model Issue {
+  id        String   @id @default(uuid())
+  issueNumber Int
+  volumeId  String
+  volume    Volume   @relation(fields: [volumeId], references: [id])
+  manuscripts Manuscript[]
+}
