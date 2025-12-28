@@ -15,11 +15,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 coverage/
+*.log
 
 # Env and local config
 .env
 .env.local
 .env.*.local
+
+# Local databases
+backend/prisma/*.db
 
 # Editor and system files
 .DS_Store
